@@ -71,7 +71,7 @@ export class App {
         info: {
           title: 'REST API',
           version: '1.0.0',
-          description: 'Example docs',
+          description: 'URL shortener docs',
         },
       },
       apis: ['swagger.yaml'],
