@@ -7,7 +7,7 @@ Features -
 - Login / Signup / Logout
 - Create shortcodes for their URLs (which are randomly generated 5 digit alphanumeric)
 - Create custom shortcodes (like /mycode) for their URLs
-There would be stats available for how many times each shortlink has been opened. Also the traffic stats will have details of the referrer URL (which gives information on where the traffic is coming from).
+- There would be stats available for how many times each shortlink has been opened. Also the traffic stats will have details of the referrer URL (which gives information on where the traffic is coming from). (Future)
 - List all of their shortcodes with stats
 - Update / Delete shortcodes
 
