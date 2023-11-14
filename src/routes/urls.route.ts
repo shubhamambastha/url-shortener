@@ -15,6 +15,6 @@ export class UrlRoute implements Routes {
 
   private initializeRoutes() {
     this.router.get(`${this.path}`, this.url.getUrls);
-    this.router.post(`${this.path}`, ValidationMiddleware(CreateUrlDto), this.url.createUrl);
+    this.router.post(`${this.path}`, AuthMiddleware, ValidationMiddleware(CreateUrlDto), this.url.createUrl);
   }
 }
