@@ -19,16 +19,17 @@ export class App {
   public env: string;
   public port: string | number;
 
-  constructor(routes: Routes[]) {
+  constructor(apiRoutes: Routes[], redirectRoute: Routes) {
     this.app = express();
     this.env = NODE_ENV || 'development';
     this.port = PORT || 3000;
 
     this.connectToDatabase();
     this.initializeMiddlewares();
-    this.initializeRoutes(routes);
+    this.initializeRoutes(apiRoutes);
     this.initializeSwagger();
     this.initializeErrorHandling();
+    this.initializeRedirectRoute(redirectRoute);
   }
 
   public listen() {
@@ -61,8 +62,12 @@ export class App {
 
   private initializeRoutes(routes: Routes[]) {
     routes.forEach(route => {
-      this.app.use('/api/', route.router);
+      this.app.use('/api', route.router);
     });
+  }
+
+  private initializeRedirectRoute(redirectRoute: Routes) {
+    this.app.use('/', redirectRoute.router);
   }
 
   private initializeSwagger() {

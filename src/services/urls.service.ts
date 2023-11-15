@@ -27,6 +27,13 @@ export class UrlService extends Repository<UrlEntity> {
     return urls;
   }
 
+  public async findUrlByCode(code: string): Promise<Urls> {
+    const shortCodeInt = radix64ToInt(code);
+    const url: Urls = await UrlEntity.findOne({ where: { id: shortCodeInt } });
+    if (!url) return null;
+    return url;
+  }
+
   public async findUserUrls(user: User): Promise<Urls[]> {
     if (!user) throw new HttpException(401, 'User not found');
     const urls: Urls[] = await UrlEntity.find({ where: { owner: user } });
