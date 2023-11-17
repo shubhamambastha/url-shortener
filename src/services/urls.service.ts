@@ -44,6 +44,8 @@ export class UrlService extends Repository<UrlEntity> {
     const findUrl: Urls = await UrlEntity.findOne({ where: { longUrl: data.longUrl } });
     if (findUrl) throw new HttpException(409, `This url ${data.longUrl} already exists`);
 
+    if (data.shortCode) return this.createCustomUrl(data, user);
+
     const shortCode = this.genRandomShortcode();
 
     const findShortCode: Urls = await UrlEntity.findOne({ where: { shortCode: shortCode } });
@@ -52,5 +54,13 @@ export class UrlService extends Repository<UrlEntity> {
     }
 
     return this.createSpecificShortCode(shortCode, data.longUrl, user);
+  }
+
+  public async createCustomUrl(data: Urls, user: User): Promise<Urls> {
+    const shortCodeInt = radix64ToInt(data.shortCode);
+    const findShortCode: Urls = await UrlEntity.findOne({ where: { id: shortCodeInt } });
+    if (findShortCode) throw new HttpException(409, `This shortCode ${data.shortCode} already exists`);
+
+    return this.createSpecificShortCode(data.shortCode, data.longUrl, user);
   }
 }
