@@ -3,6 +3,8 @@ tags:
   description: Admin APIs
 - name: User
   description: User APIs
+- name: URL
+  description: URL APIs
 
 paths:
 # [GET] users
@@ -167,6 +169,59 @@ paths:
         500:
           description: 'Server Error'
 
+# [GET] urls
+  /urls:
+    get:
+      tags:
+      - URL
+      summary: Find All URLs
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+# [POST] urls
+    post:
+      tags:
+      - URL
+      summary: Add URL
+      parameters:
+      - name: body
+        in: body
+        description: url Data
+        required: true
+        schema:
+          $ref: '#/definitions/urls'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [DELETE] urls/id
+    delete:
+      tags:
+      - URL
+      summary: Delete URL By Id
+      parameters:
+      - name: id
+        in: path
+        description: url Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
 # definitions
 definitions:
   users:
@@ -181,6 +236,18 @@ definitions:
       password:
         type: string
         description: user Password
+  
+  urls:
+    type: object
+    required:
+        - longUrl
+    properties:
+      longUrl:
+        type: string
+        description: original url
+      shortCode:
+        type: string
+        description: custom url
 
 schemes:
  - https
