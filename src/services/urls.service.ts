@@ -63,4 +63,28 @@ export class UrlService extends Repository<UrlEntity> {
 
     return this.createSpecificShortCode(data.shortCode, data.longUrl, user);
   }
+
+  public async editUrl(data: Urls, user: User): Promise<Urls> {
+    const findUrl: Urls = await UrlEntity.findOne({ where: { longUrl: data.longUrl } });
+    if (!findUrl) throw new HttpException(409, `This url ${data.longUrl} does not exist`);
+
+    const shortCode = this.genRandomShortcode();
+
+    const findShortCode: Urls = await UrlEntity.findOne({ where: { shortCode: shortCode } });
+    if (findShortCode) {
+      return this.editUrl(data, user);
+    }
+
+    return this.createSpecificShortCode(shortCode, data.longUrl, user);
+  }
+
+  public async deleteUrl(id: number, user: User): Promise<Urls> {
+    const findUrl: Urls = await UrlEntity.findOne({ where: { id } });
+    if (!findUrl) throw new HttpException(409, `This url ${id} does not exist`);
+
+    if (findUrl.owner.id !== user.id) throw new HttpException(401, 'You are not the owner of this url');
+
+    await UrlEntity.delete({ id });
+    return findUrl;
+  }
 }
